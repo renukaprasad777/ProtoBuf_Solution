@@ -14,21 +14,22 @@ public class CsvRead {
 	public void readCsv() throws IOException, CsvException{
 		RestAssured.baseURI="https://api.restful-api.dev";
 			
+		//to read a CSV file
         CSVReader reader = new CSVReader(new FileReader("src/test/resources/userData.csv"));
         java.util.List<String[]> records = reader.readAll();
         reader.close();
         
-        for (int i = 1; i < records.size(); i++) {
+        for(int i = 1; i < records.size(); i++) {
             String[] row = records.get(i);
             String name = row[0];
             String data = row[1];
             
-		 Response response = given().contentType(ContentType.JSON).body("{\"name\": \""+ name +"\",\"data\": \""+data+"\"}").log().all()
+		 String csvResponse = given().contentType(ContentType.JSON)
+				 .body("{\"name\": \""+ name +"\",\"data\": \""+data+"\"}") //concatenating the values with the title specified in the CSV file
 		.when().post("/objects")
-		.then().assertThat().statusCode(200).extract().response();
+		.then().assertThat().statusCode(200).extract().response().asString();
 		
-		String csvResp = response.getBody().asString();
-		System.out.println(csvResp);
+		System.out.println(csvResponse);
         }
 	}
 }

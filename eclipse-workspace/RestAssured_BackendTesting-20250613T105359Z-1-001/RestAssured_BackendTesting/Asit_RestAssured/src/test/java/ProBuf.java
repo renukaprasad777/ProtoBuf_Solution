@@ -17,7 +17,7 @@ public class ProBuf {
         byte[] requestBody = request.toByteArray();
         System.out.println(requestBody);
 
-        // Send protobuf payload via REST Assured
+        // Sending protobuf payload
         Response response = RestAssured
                 .given()
                     .baseUri("https://example.com")
@@ -29,14 +29,9 @@ public class ProBuf {
                 .then()
                     .extract().response();
 
-        // If response is also in protobuf
+        // De-serialize if response is also in protobuf
         byte[] responseBytes = response.asByteArray();
         System.out.println(responseBytes);;
 
-        // Deserialize response (assuming you have a ResponseMessage proto)
-        // ResponseMessage responseMessage = ResponseMessage.parseFrom(responseBytes);
-
-        System.out.println("Status: " + response.statusCode());
-        // System.out.println("Response ID: " + responseMessage.getId());
 	}
 }
